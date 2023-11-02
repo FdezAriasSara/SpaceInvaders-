@@ -25,12 +25,6 @@
     <Filter Include="Archivos de origen\actores">
       <UniqueIdentifier>{d72f9674-6a1c-47ec-9ac3-e65b9c20e91d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Archivos de origen\actores\enemigos">
-      <UniqueIdentifier>{862cd29f-f479-4e08-9151-477cec26c4aa}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Archivos de encabezado\actores\enemigos">
-      <UniqueIdentifier>{5367c185-0353-41f8-80e9-505cffe8bfd6}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -66,19 +60,16 @@
     <ClCompile Include="Audio.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
-    <ClCompile Include="AstronautEnemy.cpp">
-      <Filter>Archivos de origen\actores\enemigos</Filter>
-    </ClCompile>
-    <ClCompile Include="Enemy.cpp">
-      <Filter>Archivos de origen\actores\enemigos</Filter>
-    </ClCompile>
-    <ClCompile Include="AlienEnemy.cpp">
-      <Filter>Archivos de origen\actores\enemigos</Filter>
-    </ClCompile>
     <ClCompile Include="Coin.cpp">
       <Filter>Archivos de origen\actores</Filter>
     </ClCompile>
     <ClCompile Include="PowerUp.cpp">
+      <Filter>Archivos de origen\actores</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>Archivos de origen\actores</Filter>
+    </ClCompile>
+    <ClCompile Include="Bomb.cpp">
       <Filter>Archivos de origen\actores</Filter>
     </ClCompile>
   </ItemGroup>
@@ -113,19 +104,16 @@
     <ClInclude Include="Audio.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="Enemy.h">
-      <Filter>Archivos de encabezado\actores\enemigos</Filter>
-    </ClInclude>
-    <ClInclude Include="AlienEnemy.h">
-      <Filter>Archivos de encabezado\actores\enemigos</Filter>
-    </ClInclude>
-    <ClInclude Include="AstronautEnemy.h">
-      <Filter>Archivos de encabezado\actores\enemigos</Filter>
-    </ClInclude>
     <ClInclude Include="Coin.h">
       <Filter>Archivos de encabezado\actores</Filter>
     </ClInclude>
     <ClInclude Include="PowerUp.h">
+      <Filter>Archivos de encabezado\actores</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>Archivos de encabezado\actores</Filter>
+    </ClInclude>
+    <ClInclude Include="Bomb.h">
       <Filter>Archivos de encabezado\actores</Filter>
     </ClInclude>
   </ItemGroup>

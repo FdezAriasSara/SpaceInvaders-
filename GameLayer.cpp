@@ -31,6 +31,8 @@ void GameLayer::init() {
 	projectiles.clear(); // Vaciar por si reiniciamos el juego
 	coins.clear();// Ampliación :Monedas
 	powerups.clear();//Ampliación: Disparos limitados
+	bombs.clear();//Ampliación : Bombas
+
 	enemies.push_back(new Enemy(300, 50, game));
 	enemies.push_back(new Enemy(300, 200, game));
 }
@@ -90,22 +92,42 @@ void GameLayer::update() {
 	for (auto const& coin : coins) {//Ampliación: Monedas.
 		coin->update();
 	}
+	for (auto const& bomb : bombs) {//Ampliación:Bombas
+		bomb->update();
+	}
 	player->update();
 	// Generar enemigos
 	newEnemyTime--;
+	newBombTime--;
+	newPowerUpTime--;
+	newCoinTime--;
+	int rX, rY;
 	if (newEnemyTime <= 0) {
-		int rX = (rand() % (600 - 500)) + 1 + 500;
-		int rY = (rand() % (300 - 60)) + 1 + 60;
+		  rX = (rand() % (600 - 500)) + 1 + 500;
+		  rY = (rand() % (300 - 60)) + 1 + 60;
 		enemies.push_back(new Enemy(rX, rY, game));
+		newEnemyTime = 70;
+	}if(newCoinTime<=0){
 		//-Ampliación: Monedas.
 		rX = (rand() % (600 - 500)) + 1 + 300;
 		rY = (rand() % (300 - 60)) + 1 + 40;
-		coins.push_back(new Coin(rX,rY,game));
+		coins.push_back(new Coin(rX, rY, game));
+		newCoinTime = 160;
+		//-Ampliación: Disparos limitados
+	}if(newPowerUpTime<=0){
 		rX = (rand() % (600 - 500)) + 1 + 300;
 		rY = (rand() % (300 - 60)) + 1 + 40;
 		powerups.push_back(new PowerUp(rX, rY, game));
-		newEnemyTime = 110;
-	}	
+		newPowerUpTime =540;
+	 }
+	//Ampliación:Bombas
+	if (newBombTime <= 0) {
+		rX = (rand() % (600 - 500)) + 1 + 200;
+		rY = (rand() % (300 - 60)) + 1 + 20;
+		bombs.push_back(new Bomb(rX, rY, game));
+		newBombTime = 600;
+	}
+
 	// Colisiones -Ampliación: Monedas.
 	list<Coin*> deleteCoins;
 	for (auto const& coin : coins) {
@@ -138,7 +160,20 @@ void GameLayer::update() {
 			} 
 		}
 	}
-
+		// Colisiones -Ampliación: Bombas
+	list<Bomb*> deleteBombs;
+	for (auto const& bomb : bombs) {
+		bool bInList = std::find(deleteBombs.begin(),
+			deleteBombs.end(),
+			bomb) != deleteBombs.end();
+		if (player->isOverlap(bomb)) {
+			if (!bInList) {
+				deleteBombs.push_back(bomb);
+				deleteEnemies = enemies;
+				newEnemyTime = 20;// Evitar que la pantalla quede vacía demasiado tiempo
+			}
+		}
+	}
 
 
 	list<Projectile*> deleteProjectiles;
@@ -154,8 +189,7 @@ void GameLayer::update() {
 			}
 		}
 	}
-
-
+ 
 	//Ampliación: Enemigos con vida ampliada.
 	// Colisiones , Enemy - Projectile
 	for (auto const& enemy : enemies) {
@@ -209,21 +243,30 @@ void GameLayer::update() {
 		delete delCoin;
 	}
 	deleteCoins.clear();
-
+	//Ampliación: Bombas
+	for (auto const& delBomb : deleteBombs)
+	{
+		bombs.remove(delBomb);
+		delete delBomb;
+	}
+	deleteBombs.clear();
 	
 	cout << "update GameLayer" << endl;
 }
 
 void GameLayer::draw() {
 	background->draw();
+	player->draw();
 	for (auto const& projectile : projectiles) {
 		projectile->draw();
 	}
 	for (auto const& coin: coins) {//Ampliación: Monedas
 		coin->draw();
 	}
-
-	player->draw();
+	for (auto const& bomb: bombs) {//Ampliación: Bombas
+		bomb->draw();
+	}
+ 
 	for (auto const& enemy : enemies) {
 		enemy->draw();
 	}
