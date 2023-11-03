@@ -15,7 +15,6 @@ public:
 	Audio* audioShoot;
 	int shootCadence = 30;
 	int shootTime = 0;
-	void setSpaceship();//Ampliación: Cambio de nave
 	int lives = 3;
 	int shotsLeft = 5;//Ampliación :Número finito de disparos
 

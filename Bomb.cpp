@@ -7,6 +7,6 @@ Bomb::Bomb(float x, float y, Game* game) :
 
 void Bomb::update() {
 
-	vx = -1;
+	vx = -1;//para hacer que retroceda en vez de mantenerse estático en la pantalla.
 	x = x + vx;
 }

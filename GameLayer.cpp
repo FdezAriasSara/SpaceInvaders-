@@ -16,6 +16,7 @@ void GameLayer::init() {
 	textPoints->content = to_string(points);
 
 	player = new Player(50, 50, game);
+
 	//Ampliación:Jugador tiene vidas.
 	textLives = new Text("3", WIDTH * 0.77, HEIGHT * 0.04, game);
 	textLives->content = to_string(player->lives);
@@ -95,6 +96,9 @@ void GameLayer::update() {
 	for (auto const& bomb : bombs) {//Ampliación:Bombas
 		bomb->update();
 	}
+	for (auto const& powerup :powerups) {//Ampliación: Disparos limitados
+		powerup->update();
+	}
 	player->update();
 	// Generar enemigos
 	newEnemyTime--;
@@ -110,13 +114,13 @@ void GameLayer::update() {
 	}if(newCoinTime<=0){
 		//-Ampliación: Monedas.
 		rX = (rand() % (600 - 500)) + 1 + 300;
-		rY = (rand() % (300 - 60)) + 1 + 40;
+		rY = (rand() % (310 - 50)) + 1 + 40;
 		coins.push_back(new Coin(rX, rY, game));
 		newCoinTime = 160;
-		//-Ampliación: Disparos limitados
+		//-Ampliación: Disparos limitados - powerups
 	}if(newPowerUpTime<=0){
-		rX = (rand() % (600 - 500)) + 1 + 300;
-		rY = (rand() % (300 - 60)) + 1 + 40;
+		rX = (rand() % (500 - 200)) + 1 + 300;
+		rY = (rand() % (270 - 40)) + 1 + 40;
 		powerups.push_back(new PowerUp(rX, rY, game));
 		newPowerUpTime =540;
 	 }
@@ -174,8 +178,23 @@ void GameLayer::update() {
 			}
 		}
 	}
+	//Ampliación : Número finito de disparos.
 
+	list<PowerUp*> deletePowerup;
+	
+	for (auto const& powerup : powerups) {
+		bool puInList = std::find(deletePowerup.begin(),
+			deletePowerup.end(), powerup) != deletePowerup.end();
+		if (player->isOverlap(powerup)) {
+			if (!puInList) {
+				player->shotsLeft += 10;
+				deletePowerup.push_back(powerup);
+			}
+		}
+	
+	}
 
+	//Popular lista de proyectiles para poder borrarlos.
 	list<Projectile*> deleteProjectiles;
 	for (auto const& projectile : projectiles) {
 		if (projectile->isInRender() == false) {
@@ -189,9 +208,10 @@ void GameLayer::update() {
 			}
 		}
 	}
- 
 	//Ampliación: Enemigos con vida ampliada.
 	// Colisiones , Enemy - Projectile
+	//La lista delete projectiles se ha iniciado anteriormente, para eliminar los proyectiles que no impactan 
+	//En este caso, se eliminan los enemigos que impactan con los proyectiles y a su vez se elimina el proyectil en sí
 	for (auto const& enemy : enemies) {
 		for (auto const& projectile : projectiles) {
 			if (enemy->isOverlap(projectile)) {
@@ -210,7 +230,7 @@ void GameLayer::update() {
 
 						if (!eInList) {
 							deleteEnemies.push_back(enemy);
-							player->shotsLeft++;
+							player->shotsLeft++;//Ampliación : Número finito de disparos.
 						}
 
 						points++;
@@ -224,7 +244,7 @@ void GameLayer::update() {
 				}
 			}
 			}
-		
+
 
 	for (auto const& delEnemy : deleteEnemies) {
 		enemies.remove(delEnemy);
@@ -250,8 +270,14 @@ void GameLayer::update() {
 		delete delBomb;
 	}
 	deleteBombs.clear();
-	
-	cout << "update GameLayer" << endl;
+	//Ampliación: Número finito de disparos.
+	for (auto const& delpowerup : deletePowerup)
+	{
+  		powerups.remove(delpowerup);
+		delete delpowerup;
+	}
+	deletePowerup.clear();
+	//cout << "update GameLayer" << endl;
 }
 
 void GameLayer::draw() {

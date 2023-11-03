@@ -43,7 +43,7 @@ bool Animation::update() {
 	}
 	//Actualizar el rectangulo del source (siguiente frame)
 	source.x = currentFrame * frameWidth;
-	return false; // luego lo cambiamos
+	return false;
 }
 
 void Animation::draw(float x, float y) {

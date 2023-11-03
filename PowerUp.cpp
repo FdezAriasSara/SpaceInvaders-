@@ -3,8 +3,9 @@
 PowerUp::PowerUp(float x, float y, Game* game) :
 	Actor("res/icono_recolectable.png", x, y, 40, 40, game) {
 	aMoving = new Animation("res/recolectable.png", width, height,
-		32, 256, 6, 3, game);
+		 256,32 , 1, 8, game);
 	animation = aMoving;
+ 
 }
 
 void PowerUp::update() {
